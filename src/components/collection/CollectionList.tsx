@@ -51,24 +51,13 @@ export default function CollectionList({
 }: CollectionListProps) {
   if (!entries) {
     return (
-      <Table fullWidth className="f36-margin-top--m">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Content Type</TableCell>
-            <TableCell>Updated</TableCell>
-            <TableCell>Workflow</TableCell>
-            <TableCell>Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Array(4)
-            .fill('')
-            .map((_, i) => (
-              <SkeletonRow key={i} />
-            ))}
-        </TableBody>
-      </Table>
+      <HelpText
+        style={{
+          textAlign: 'center',
+        }}
+      >
+        No entries found, go edit some content!
+      </HelpText>
     );
   }
 
@@ -99,6 +88,18 @@ export default function CollectionList({
                 >
                   {entry.fields.title
                     ? entry.fields.title['en-US']
+                    : entry.fields.internalName
+                    ? entry.fields.internalName['en-US']
+                    : entry.fields.internalTitle
+                    ? entry.fields.internalTitle['en-US']
+                    : entry.fields.pageTitle
+                    ? entry.fields.pageTitle['en-US']
+                    : entry.fields.pageHeading
+                    ? entry.fields.pageHeading['en-US']
+                    : entry.fields.name
+                    ? entry.fields.name['en-US']
+                    : entry.fields.text
+                    ? entry.fields.text['en-US']
                     : 'Untitled'}
                 </TableCell>
                 <TableCell
@@ -156,5 +157,24 @@ export default function CollectionList({
   }
 
   // No entries found (after fetching/loading).
-  return <HelpText className="f36-margin-top--m">No entries found.</HelpText>;
+  return (
+    <Table fullWidth className="f36-margin-top--m">
+      <TableHead>
+        <TableRow>
+          <TableCell>Name</TableCell>
+          <TableCell>Content Type</TableCell>
+          <TableCell>Updated</TableCell>
+          <TableCell>Workflow</TableCell>
+          <TableCell>Status</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {Array(10)
+          .fill('')
+          .map((_, i) => (
+            <SkeletonRow key={i} />
+          ))}
+      </TableBody>
+    </Table>
+  );
 }

@@ -39,9 +39,16 @@ export const UserData = () => {
           <Text fontSize="fontSizeXl">{sdk.user.firstName}</Text>
         </Box>
         {environmentResult && (
-          <Text fontSize="fontSizeM">
-            You're in the {environmentResult} environment.
-          </Text>
+          <Paragraph fontSize="fontSizeM">
+            You're in the{' '}
+            <Text
+              fontColor="colorPositive"
+              fontFamily="var(--font-stack-monospace)"
+            >
+              {environmentResult}
+            </Text>{' '}
+            environment.
+          </Paragraph>
         )}
         <UserRole spaceMembership={sdk.user.spaceMembership} />
       </Flex>

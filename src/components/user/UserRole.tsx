@@ -7,7 +7,7 @@ type UserRoleProps = {
 };
 
 export const UserRole = ({ spaceMembership }: UserRoleProps) => (
-  <Stack>
+  <Stack spacing="spacingXs">
     <Text>
       {spaceMembership.roles.length >= 2 ? 'Current Roles:' : 'Current Role:'}
     </Text>
@@ -19,7 +19,7 @@ export const UserRole = ({ spaceMembership }: UserRoleProps) => (
               <Badge
                 variant="positive"
                 key={role.name}
-                className="f36-margin-right--xs f36-margin-left--xs"
+                className="f36-margin-right--2xs f36-margin-left--2xs"
               >
                 role.name
               </Badge>
@@ -30,7 +30,7 @@ export const UserRole = ({ spaceMembership }: UserRoleProps) => (
       {spaceMembership.admin && (
         <Badge
           variant="positive"
-          className="f36-margin-right--xs f36-margin-left--xs"
+          className="f36-margin-right--2xs f36-margin-left--2xs"
         >
           Admin
         </Badge>
