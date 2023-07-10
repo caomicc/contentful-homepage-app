@@ -8,26 +8,16 @@ import {
 import { useAsync } from 'react-async-hook';
 import { useCMA } from '@contentful/react-apps-toolkit';
 import Comments from './Comments';
-import { createClient } from 'contentful-management';
-
-export const client = createClient({
-  space: process.env.CONTENTFUL_SPACE_ID ?? 'check_CONTENTFUL_SPACE_ID',
-  accessToken:
-    process.env.CONTENTFUL_ACCESS_TOKEN ?? 'check_CONTENTFUL_ACCESS_TOKEN',
-});
 
 const getUserComments = async (cma: ReturnType<typeof useCMA>) => {
   try {
     const [currentUser] = await Promise.all([
-      // client.getCurrentUser(),
       cma.user.getCurrent({}),
       cma.comment,
     ]);
     console.log('currentUser', currentUser);
-    // console.log('userInfo', userInfo);
     return {
       currentUser: { num: currentUser, text: 'Current user' },
-      // userInfo: { num: userInfo, text: 'User Info' },
     };
   } catch (e) {
     console.log(e);
@@ -40,7 +30,6 @@ const CommentsContainer = () => {
 
   // console.log('cma', cma);
   // console.log('sdk', sdk);
-  // console.log('client', client);
 
   const { result, loading } = useAsync(getUserComments, [cma]);
 
@@ -54,10 +43,7 @@ const CommentsContainer = () => {
       }}
     >
       <SectionHeading>Recent comments</SectionHeading>
-      <Flex
-        // marginTop="spacingXl"
-        fullWidth
-      >
+      <Flex fullWidth>
         {loading ? <HelpText>Loading comments...</HelpText> : ''}
         {result ? (
           <>
