@@ -3,6 +3,8 @@ import { Flex } from '@contentful/f36-components';
 import Stats from '../components/stats/Stats';
 import CollectionContainer from '../components/collection/CollectionContainer';
 import { UserData } from '../components/user/UserData';
+import CommentsContainer from '../components/comments/CommentsContainer';
+import QuickLinks from '../components/quicklinks/QuickLinks';
 
 export const Home = () => {
   return (
@@ -16,10 +18,12 @@ export const Home = () => {
         fullWidth
       >
         <UserData />
+        <QuickLinks />
         <Stats />
       </Flex>
-      <Flex fullWidth>
+      <Flex fullWidth gap="spacingXl">
         <CollectionContainer />
+        <CommentsContainer />
       </Flex>
     </Flex>
   );

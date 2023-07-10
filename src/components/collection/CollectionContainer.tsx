@@ -38,6 +38,7 @@ const CollectionContainer = () => {
       }}
     >
       <SectionHeading>Your most recently edited entries</SectionHeading>
+
       {loading ? (
         <Flex marginTop="spacingXl">
           <CollectionList

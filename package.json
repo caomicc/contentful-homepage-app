@@ -1,13 +1,15 @@
 {
-  "name": "home-location",
+  "name": "homepage",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@contentful/app-sdk": "4.17.1",
     "@contentful/f36-components": "4.45.0",
+    "@contentful/f36-navlist": "^4.1.0-alpha.1",
     "@contentful/f36-tokens": "4.0.2",
     "@contentful/react-apps-toolkit": "1.2.4",
-    "contentful-management": "10.10.0",
+    "contentful": "^10.3.1",
+    "contentful-management": "^10.10.0",
     "dayjs-greet": "^1.0.0",
     "emotion": "10.0.27",
     "react": "18.2.0",

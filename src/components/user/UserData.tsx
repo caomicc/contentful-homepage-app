@@ -1,4 +1,3 @@
-import { createClient } from 'contentful-management';
 import { Text, Card, Flex, Box, Paragraph } from '@contentful/f36-components';
 import React, { useCallback } from 'react';
 import dayjs from 'dayjs';
