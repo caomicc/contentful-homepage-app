@@ -1,4 +1,12 @@
-import { Text, Card, Flex, Box, Paragraph } from '@contentful/f36-components';
+import {
+  Text,
+  Card,
+  Flex,
+  Box,
+  Paragraph,
+  Stack,
+} from '@contentful/f36-components';
+import { Avatar } from '@contentful/f36-avatar';
 import React, { useCallback } from 'react';
 import dayjs from 'dayjs';
 import greetPlugin from 'dayjs-greet';
@@ -32,22 +40,28 @@ export const UserData = () => {
     <Card>
       <Flex flexDirection="column" gap="spacingS">
         <Box>
-          <Text as={Paragraph} fontSize="fontSizeL" marginBottom={'spacingXs'}>
-            👋 {dayjs(timestamp).greet()},
-          </Text>
-          <Text fontSize="fontSizeXl">{sdk.user.firstName}</Text>
+          <Stack>
+            <Avatar src={sdk.user.avatarUrl} size="large" />
+            <Box>
+              <Text
+                as={Paragraph}
+                fontSize="fontSizeL"
+                marginBottom={'spacingXs'}
+              >
+                👋 {dayjs(timestamp).greet()},
+              </Text>
+              <Text fontSize="fontSizeXl">{sdk.user.firstName}</Text>
+            </Box>
+          </Stack>
         </Box>
         {environmentResult && (
-          <Paragraph fontSize="fontSizeM">
+          <Text as={Paragraph} fontSize="fontSizeM">
             You're in the{' '}
-            <Text
-              fontColor="colorPositive"
-              fontFamily="var(--font-stack-monospace)"
-            >
+            <Text fontColor="colorPositive" fontStack="fontStackMonospace">
               {environmentResult}
             </Text>{' '}
             environment.
-          </Paragraph>
+          </Text>
         )}
         <UserRole spaceMembership={sdk.user.spaceMembership} />
       </Flex>

@@ -6,34 +6,36 @@ import {
   SectionHeading,
 } from '@contentful/f36-components';
 import { useAsync } from 'react-async-hook';
-import { useCMA } from '@contentful/react-apps-toolkit';
+import { useCMA, useSDK } from '@contentful/react-apps-toolkit';
 import Comments from './Comments';
+import { createClient } from 'contentful-management';
 
-const getUserComments = async (cma: ReturnType<typeof useCMA>) => {
+const getUserComments = async (cma: any) => {
   try {
-    const [currentUser] = await Promise.all([
-      cma.user.getCurrent({}),
+    const [editor, currentUser, comments] = await Promise.all([
+      cma.editorInterface,
+      cma.user,
       cma.comment,
     ]);
-    console.log('currentUser', currentUser);
+    // console.log('currentUser', currentUser);
     return {
+      editor: { num: editor, text: 'Editor' },
       currentUser: { num: currentUser, text: 'Current user' },
+      comments: { num: comments, text: 'Comments' },
     };
   } catch (e) {
-    console.log(e);
+    console.log('ln 25', e);
   }
 };
 
 const CommentsContainer = () => {
+  const sdk = useSDK();
   const cma = useCMA();
-  // const sdk = useSDK();
+  const cma2 = createClient({ apiAdapter: sdk.cmaAdapter });
 
-  // console.log('cma', cma);
-  // console.log('sdk', sdk);
+  console.log('cma2', cma2);
 
   const { result, loading } = useAsync(getUserComments, [cma]);
-
-  // console.log(result, loading);
 
   return (
     <Box
@@ -47,7 +49,10 @@ const CommentsContainer = () => {
         {loading ? <HelpText>Loading comments...</HelpText> : ''}
         {result ? (
           <>
-            <Comments currentUser={result.currentUser} />
+            {console.log('result', result)}
+            {console.log('result', result.currentUser.num)}
+            <HelpText>Hmmm....</HelpText>
+            {/* <Comments currentUser={result.currentUser} /> */}
           </>
         ) : (
           <HelpText>Nothing to see here folks 😇</HelpText>

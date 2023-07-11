@@ -2,9 +2,9 @@ import React, { useCallback } from 'react';
 import { Box, Flex, SectionHeading } from '@contentful/f36-components';
 import { useAsync } from 'react-async-hook';
 import { useCMA, useSDK } from '@contentful/react-apps-toolkit';
-import CollectionList from './CollectionList';
+import UserPostList from './UserPostList';
 
-const CollectionContainer = () => {
+const UserPostContainer = () => {
   const cma = useCMA();
   const sdk = useSDK();
   const getStats = useCallback(async () => {
@@ -13,7 +13,7 @@ const CollectionContainer = () => {
       cma.entry.getMany({
         query: {
           'sys.updatedBy.sys.id': sdk.user.sys.id,
-          limit: 10,
+          limit: 5,
         },
       }),
       cma.asset.getMany({}),
@@ -41,7 +41,7 @@ const CollectionContainer = () => {
 
       {loading ? (
         <Flex marginTop="spacingXl">
-          <CollectionList
+          <UserPostList
             // contentTypes={contentTypes}
             entries={[]}
             onClickItem={(entryId) => sdk.navigator.openEntry(entryId)}
@@ -54,7 +54,7 @@ const CollectionContainer = () => {
           }}
         >
           {result && (
-            <CollectionList
+            <UserPostList
               // contentTypes={contentTypes}
               entries={result.entries.num.items}
               onClickItem={(entryId) => sdk.navigator.openEntry(entryId)}
@@ -66,4 +66,4 @@ const CollectionContainer = () => {
   );
 };
 
-export default CollectionContainer;
+export default UserPostContainer;

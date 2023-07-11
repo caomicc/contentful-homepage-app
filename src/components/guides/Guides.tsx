@@ -1,17 +1,10 @@
 import React from 'react';
-import {
-  Box,
-  Button,
-  Flex,
-  SectionHeading,
-  TextLink,
-} from '@contentful/f36-components';
+import { Box, Flex, SectionHeading } from '@contentful/f36-components';
 import { useAsync } from 'react-async-hook';
 import { useCMA, useSDK } from '@contentful/react-apps-toolkit';
 import { NavList } from '@contentful/f36-navlist';
-import { ContentTypeProps } from 'contentful-management';
 
-const getQuickLinks = async (cma: ReturnType<typeof useCMA>) => {
+const getGuides = async (cma: ReturnType<typeof useCMA>) => {
   try {
     const [contentTypes, entries, assets, locales, tags, users] =
       await Promise.all([
@@ -36,51 +29,24 @@ const getQuickLinks = async (cma: ReturnType<typeof useCMA>) => {
   }
 };
 
-const QuickLinks = () => {
+const Guides = () => {
   const cma = useCMA();
   const sdk = useSDK();
 
   console.log('cma', cma);
   console.log('sdk', sdk);
 
-  console.log(
-    'sdk params',
-    sdk.parameters.installation
-    // sdk.parameters.invocation,
-    // sdk.parameters.instance
-  );
+  console.log('sdk params', sdk.parameters.installation);
 
-  const { result, loading } = useAsync(getQuickLinks, [cma]);
+  const { result, loading } = useAsync(getGuides, [cma]);
 
   return (
     <Box>
-      <SectionHeading>Quicklinks:</SectionHeading>
+      <SectionHeading>Guides:</SectionHeading>
       {loading ? (
         <Flex marginTop="spacingXl">{/* <LoadingStats /> */}</Flex>
       ) : (
         <NavList aria-label="Content Type Sidebar">
-          <NavList.Item
-            as={TextLink}
-            target="_blank"
-            href="https://workhuman-next.netlify.app"
-            style={{
-              justifyContent: 'flex-start',
-              textDecoration: 'none',
-            }}
-          >
-            🏡 Visit our Homepage
-          </NavList.Item>
-          <NavList.Item
-            as={TextLink}
-            target="_blank"
-            href="https://workhuman-next.netlify.app/blog"
-            style={{
-              justifyContent: 'flex-start',
-              textDecoration: 'none',
-            }}
-          >
-            📚 Visit our Blog
-          </NavList.Item>
           {result &&
             Object.entries(result.contentTypes.items)
               .filter(([key, value]) =>
@@ -116,4 +82,4 @@ const QuickLinks = () => {
   );
 };
 
-export default QuickLinks;
+export default Guides;

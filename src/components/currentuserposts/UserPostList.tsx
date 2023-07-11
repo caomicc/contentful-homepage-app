@@ -11,11 +11,11 @@ import {
   TableBody,
   Badge,
   SkeletonRow,
-  Button,
   Flex,
+  Text,
 } from '@contentful/f36-components';
 
-export type CollectionsState = {
+export type UserPostState = {
   total: number | null;
   published: number | null;
   scheduled: number | null;
@@ -39,16 +39,16 @@ function getEntryStatus(entrySys: EntrySys) {
   return <Badge variant="warning">draft</Badge>;
 }
 
-export type CollectionListProps = {
+export type UserPostListProps = {
   entries: any;
   tag?: any;
   onClickItem: (entryId: string) => void;
 };
 
-export default function CollectionList({
+export default function UserPostList({
   entries,
   onClickItem,
-}: CollectionListProps) {
+}: UserPostListProps) {
   if (!entries) {
     return (
       <HelpText
@@ -69,12 +69,13 @@ export default function CollectionList({
             <TableCell>Name</TableCell>
             <TableCell>Content Type</TableCell>
             <TableCell>Updated</TableCell>
-            <TableCell>Workflow</TableCell>
+            <TableCell>Created By</TableCell>
             <TableCell>Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {entries.map((entry: any) => {
+            console.log('entry', entry);
             return (
               <TableRow
                 key={entry.sys.id}
@@ -84,68 +85,85 @@ export default function CollectionList({
                 <TableCell
                   style={{
                     verticalAlign: 'middle',
+                    width: '20%',
                   }}
                 >
-                  {entry.fields.title
-                    ? entry.fields.title['en-US']
-                    : entry.fields.internalName
-                    ? entry.fields.internalName['en-US']
-                    : entry.fields.internalTitle
-                    ? entry.fields.internalTitle['en-US']
-                    : entry.fields.pageTitle
-                    ? entry.fields.pageTitle['en-US']
-                    : entry.fields.pageHeading
-                    ? entry.fields.pageHeading['en-US']
-                    : entry.fields.name
-                    ? entry.fields.name['en-US']
-                    : entry.fields.text
-                    ? entry.fields.text['en-US']
-                    : 'Untitled'}
+                  <Text
+                    style={{
+                      fontWeight: '500',
+                      lineClamp: 2,
+                      boxOrient: 'vertical',
+                      color: 'rgb(17, 27, 43)',
+                    }}
+                  >
+                    {entry.fields.title
+                      ? entry.fields.title['en-US']
+                      : entry.fields.internalName
+                      ? entry.fields.internalName['en-US']
+                      : entry.fields.internalTitle
+                      ? entry.fields.internalTitle['en-US']
+                      : entry.fields.pageTitle
+                      ? entry.fields.pageTitle['en-US']
+                      : entry.fields.pageHeading
+                      ? entry.fields.pageHeading['en-US']
+                      : entry.fields.name
+                      ? entry.fields.name['en-US']
+                      : entry.fields.text
+                      ? entry.fields.text['en-US']
+                      : 'Untitled'}
+                  </Text>
                 </TableCell>
                 <TableCell
                   style={{
                     verticalAlign: 'middle',
                     textTransform: 'capitalize',
+                    width: '20%',
                   }}
                 >
-                  {entry.sys.contentType.sys.id}
+                  <Text
+                    style={{
+                      color: 'rgb(65, 77, 99)',
+                    }}
+                  >
+                    {entry.sys.contentType.sys.id}
+                  </Text>
                 </TableCell>
                 <TableCell
                   style={{
                     verticalAlign: 'middle',
+                    width: '20%',
                   }}
                 >
-                  {new Date(entry.sys.updatedAt).toLocaleDateString('en-US')}
+                  <Text
+                    style={{
+                      color: 'rgb(65, 77, 99)',
+                    }}
+                  >
+                    {new Date(entry.sys.updatedAt).toLocaleDateString('en-US')}
+                  </Text>
                 </TableCell>
                 <TableCell
                   style={{
                     verticalAlign: 'middle',
+                    width: '20%',
                   }}
                 >
-                  {entry.metadata.tags.map((tag: any, i) => {
-                    return (
-                      <Flex key={i}>
-                        <div className={tag.sys.id}></div>
-                        {tag.sys.id ===
-                          'ctf-workflows-tag-NRI-gHosZsKm_AA6SnrBD' && (
-                          <>Ready For Approval</>
-                        )}
-                        {tag.sys.id ===
-                          'ctf-workflows-tag-io8LB_6CtVSd59F0LEO3h' && (
-                          <>Approved</>
-                        )}
-                        {tag.sys.id ===
-                          'ctf-workflows-tag-_n9nvHgUJBYD_o0yTQVY_' && (
-                          <>Draft</>
-                        )}
-                      </Flex>
-                    );
-                  })}
+                  <Text
+                    style={{
+                      color: 'rgb(65, 77, 99)',
+                    }}
+                  >
+                    {entry.sys.createdBy.sys.id}
+                  </Text>
                 </TableCell>
-                <TableCell>
+                <TableCell
+                  style={{
+                    width: '20%',
+                  }}
+                >
                   <Flex justifyContent="space-between" alignItems="center">
                     <span>{getEntryStatus(entry.sys)}</span>
-                    <Button size="small">Edit</Button>
+                    {/* <Button size="small">Edit</Button> */}
                   </Flex>
                 </TableCell>
               </TableRow>
@@ -164,12 +182,12 @@ export default function CollectionList({
           <TableCell>Name</TableCell>
           <TableCell>Content Type</TableCell>
           <TableCell>Updated</TableCell>
-          <TableCell>Workflow</TableCell>
+          <TableCell>Created By</TableCell>
           <TableCell>Status</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {Array(10)
+        {Array(5)
           .fill('')
           .map((_, i) => (
             <SkeletonRow key={i} />

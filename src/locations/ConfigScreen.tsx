@@ -12,14 +12,11 @@ import { useCMA, useSDK } from '@contentful/react-apps-toolkit';
 import { ContentTypeProps, EditorInterface } from 'contentful-management';
 import tokens from '@contentful/f36-tokens';
 import { getInitialSidebarContentTypes } from '../utils/sidebar';
-import {
-  filterShortTextFieldCTs,
-  getInitialFieldContentTypes,
-  buildFieldTargetState,
-} from '../utils/shortTextField';
 const merge = require('lodash.merge');
 
-export interface AppInstallationParameters {}
+export interface AppInstallationParameters {
+  selectedSidebarCTs?: AppInstallationParameters | null | string[];
+}
 
 const styles = {
   body: css({
@@ -65,14 +62,6 @@ const onCTSelect = (
   setSelectedCTs: (cts: string[]) => void,
   ct: string
 ) => {
-  console.log('onCTSelect, ct', selectedCTs, ct);
-
-  console.log(
-    'selectedCTs.includes(ct)',
-    selectedCTs.includes(ct),
-    selectedCTs.filter((item) => item !== ct)
-  );
-
   selectedCTs.includes(ct)
     ? setSelectedCTs(selectedCTs.filter((item) => item !== ct))
     : setSelectedCTs([...selectedCTs, ct]);
@@ -82,12 +71,26 @@ const ConfigScreen = () => {
   const [parameters, setParameters] = useState<AppInstallationParameters>({});
   const [contentTypes, setContentTypes] = useState<ContentTypeProps[]>([]);
   const [selectedSidebarCTs, setSelectedSidebarCTs] = useState<string[]>([]);
-  // const [supportedFieldCTs, setSupportedFieldCTs] = useState<
-  //   ContentTypeProps[]
-  // >([]);
-  // const [selectedFieldCTs, setSelectedFieldCTs] = useState<string[]>([]);
+
   const sdk = useSDK<ConfigAppSDK>();
   const cma = useCMA();
+
+  useEffect(() => {
+    (async () => {
+      // Get current parameters of the app.
+      // If the app is not installed yet, `parameters` will be `null`.
+      const currentParameters: AppInstallationParameters | null | any =
+        await sdk.app.getParameters();
+
+      if (currentParameters && currentParameters.selectedSidebarCTs) {
+        setSelectedSidebarCTs(currentParameters.selectedSidebarCTs);
+      }
+
+      // Once preparation has finished, call `setReady` to hide
+      // the loading screen and present the app to a user.
+      sdk.app.setReady();
+    })();
+  }, [sdk]);
 
   const onConfigure = useCallback(async () => {
     // This method will be called when a user clicks on "Install"
@@ -96,26 +99,15 @@ const ConfigScreen = () => {
 
     // Get current the state of EditorInterface and other entities
     // related to this app installation
-    const currentState = await sdk.app.getCurrentState();
 
-    console.log('selectedSidebarCTs', selectedSidebarCTs);
-    console.log(
-      'buildSidebarTargetState',
-      buildSidebarTargetState(selectedSidebarCTs)
-    );
+    const updatedParameters: AppInstallationParameters = {
+      selectedSidebarCTs,
+    };
 
     return {
-      // Parameters to be persisted as the app configuration.
-      parameters: {
-        selectedSidebarCTs,
-      },
-      // In case you don't want to submit any update to app
-      // locations, you can just pass the currentState as is
+      parameters: updatedParameters,
       targetState: {
         EditorInterface: {
-          // ...currentState?.EditorInterface,
-
-          // apply to all selected content types' sidebar & fields
           ...merge(buildSidebarTargetState(selectedSidebarCTs)),
         },
       },
@@ -142,7 +134,7 @@ const ConfigScreen = () => {
     (async () => {
       // Get current parameters of the app.
       // If the app is not installed yet, `parameters` will be `null`.
-      const currentParameters: AppInstallationParameters | null =
+      const currentParameters: AppInstallationParameters | null | any =
         await sdk.app.getParameters();
 
       if (currentParameters) {
@@ -172,7 +164,7 @@ const ConfigScreen = () => {
       const assignedCTs = await getInitialSidebarContentTypes(cma, sdk);
       setSelectedSidebarCTs(assignedCTs);
     })();
-  }, [cma, sdk, setSelectedSidebarCTs]);
+  }, [cma, sdk]);
 
   return (
     <>
