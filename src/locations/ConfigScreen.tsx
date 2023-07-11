@@ -9,38 +9,13 @@ import {
 } from '@contentful/f36-components';
 import { css } from 'emotion';
 import { useCMA, useSDK } from '@contentful/react-apps-toolkit';
-import { ContentTypeProps, EditorInterface } from 'contentful-management';
+import { ContentTypeProps } from 'contentful-management';
 import tokens from '@contentful/f36-tokens';
-import { getInitialSidebarContentTypes } from '../utils/sidebar';
 const merge = require('lodash.merge');
 
 export interface AppInstallationParameters {
   selectedSidebarCTs?: AppInstallationParameters | null | string[];
 }
-
-const styles = {
-  body: css({
-    height: 'auto',
-    minHeight: '65vh',
-    margin: '0 auto',
-    marginTop: tokens.spacingXl,
-    padding: `${tokens.spacingXl} ${tokens.spacing2Xl}`,
-    maxWidth: tokens.contentWidthText,
-    backgroundColor: tokens.colorWhite,
-    zIndex: 2,
-    boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.1)',
-    borderRadius: '2px',
-  }),
-  background: css({
-    display: 'block',
-    position: 'absolute',
-    zIndex: -1,
-    top: 0,
-    width: '100%',
-    height: '300px',
-    backgroundColor: tokens.colorPrimary,
-  }),
-};
 
 const buildSidebarTargetState = (selectedSidebarCTs: string[]) => {
   console.log('building state...');
@@ -82,7 +57,7 @@ const ConfigScreen = () => {
       const currentParameters: AppInstallationParameters | null | any =
         await sdk.app.getParameters();
 
-      if (currentParameters && currentParameters.selectedSidebarCTs) {
+      if (currentParameters?.selectedSidebarCTs) {
         setSelectedSidebarCTs(currentParameters.selectedSidebarCTs);
       }
 
@@ -157,44 +132,40 @@ const ConfigScreen = () => {
     })();
   }, [cma, sdk]);
 
-  // Get all editor interfaces to set initial list of content types
-  // with app already assigned to it
-  useEffect(() => {
-    (async () => {
-      const assignedCTs = await getInitialSidebarContentTypes(cma, sdk);
-      setSelectedSidebarCTs(assignedCTs);
-    })();
-  }, [cma, sdk]);
-
   return (
-    <>
-      <div className={styles.background} />
-      <div className={styles.body}>
-        <Flex
-          flexDirection="column"
-          className={css({ margin: '4rem', maxWidth: '800px' })}
+    <Flex className={css({ margin: '4rem' })}>
+      <Flex
+        flexDirection="column"
+        gap={tokens.spacingM}
+        style={{
+          width: '1199px',
+          margin: '0 auto',
+        }}
+      >
+        <Heading>Select content types to use for quick links</Heading>
+        <Form
+          style={{
+            columnCount: 4,
+          }}
         >
-          <Form>
-            <Heading>Editor assignment example</Heading>
-            Assign to Content Type Sidebar
-            {contentTypes.map((ct) => (
-              <Checkbox
-                isChecked={selectedSidebarCTs.includes(ct.sys.id)}
-                onChange={() => {
-                  onSidebarContentTypeClick(ct.sys.id);
-                }}
-                key={ct.sys.id}
-                className={css({
-                  margin: tokens.spacingM,
-                })}
-              >
-                {ct.name}
-              </Checkbox>
-            ))}
-          </Form>
-        </Flex>
-      </div>
-    </>
+          {contentTypes.map((ct) => (
+            <Checkbox
+              isChecked={selectedSidebarCTs.includes(ct.sys.id)}
+              onChange={() => {
+                onSidebarContentTypeClick(ct.sys.id);
+              }}
+              key={ct.sys.id}
+              style={{
+                marginBottom: tokens.spacingM,
+              }}
+            >
+              {ct.name}
+            </Checkbox>
+          ))}
+        </Form>
+        <Heading>Add Guides</Heading>
+      </Flex>
+    </Flex>
   );
 };
 
