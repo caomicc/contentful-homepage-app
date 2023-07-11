@@ -1,37 +1,14 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { ConfigAppSDK } from '@contentful/app-sdk';
-import {
-  Heading,
-  Form,
-  // Accordion,
-  Flex,
-  Checkbox,
-} from '@contentful/f36-components';
-import { css } from 'emotion';
+import { Heading, Form, Flex, Checkbox } from '@contentful/f36-components';
 import { useCMA, useSDK } from '@contentful/react-apps-toolkit';
 import { ContentTypeProps } from 'contentful-management';
 import tokens from '@contentful/f36-tokens';
-const merge = require('lodash.merge');
 
-export interface AppInstallationParameters {
+export type AppInstallationParameters = {
   selectedSidebarCTs?: AppInstallationParameters | null | string[];
-}
-
-const buildSidebarTargetState = (selectedSidebarCTs: string[]) => {
-  console.log('building state...');
-  console.log('selectedSidebarCTs', selectedSidebarCTs);
-  const endResult = selectedSidebarCTs.reduce(
-    (acc, ct) => ({
-      ...acc,
-      [ct]: {
-        sidebar: { position: 0 },
-      },
-    }),
-    {}
-  );
-  console.log('endResult', endResult);
+  parameters?: AppInstallationParameters;
 };
-
 const onCTSelect = (
   selectedCTs: string[],
   setSelectedCTs: (cts: string[]) => void,
@@ -61,6 +38,10 @@ const ConfigScreen = () => {
         setSelectedSidebarCTs(currentParameters.selectedSidebarCTs);
       }
 
+      if (currentParameters) {
+        setParameters(currentParameters);
+      }
+
       // Once preparation has finished, call `setReady` to hide
       // the loading screen and present the app to a user.
       sdk.app.setReady();
@@ -72,20 +53,13 @@ const ConfigScreen = () => {
     // or "Save" in the configuration screen.
     // for more details see https://www.contentful.com/developers/docs/extensibility/ui-extensions/sdk-reference/#register-an-app-configuration-hook
 
-    // Get current the state of EditorInterface and other entities
-    // related to this app installation
-
     const updatedParameters: AppInstallationParameters = {
       selectedSidebarCTs,
+      parameters,
     };
 
     return {
       parameters: updatedParameters,
-      targetState: {
-        EditorInterface: {
-          ...merge(buildSidebarTargetState(selectedSidebarCTs)),
-        },
-      },
     };
   }, [parameters, sdk, selectedSidebarCTs]);
 
@@ -107,23 +81,6 @@ const ConfigScreen = () => {
 
   useEffect(() => {
     (async () => {
-      // Get current parameters of the app.
-      // If the app is not installed yet, `parameters` will be `null`.
-      const currentParameters: AppInstallationParameters | null | any =
-        await sdk.app.getParameters();
-
-      if (currentParameters) {
-        setParameters(currentParameters);
-      }
-
-      // Once preparation has finished, call `setReady` to hide
-      // the loading screen and present the app to a user.
-      sdk.app.setReady();
-    })();
-  }, [sdk]);
-
-  useEffect(() => {
-    (async () => {
       const cts = await cma.contentType.getMany({
         spaceId: sdk.ids.space,
         environmentId: sdk.ids.environment,
@@ -133,7 +90,11 @@ const ConfigScreen = () => {
   }, [cma, sdk]);
 
   return (
-    <Flex className={css({ margin: '4rem' })}>
+    <Flex
+      style={{
+        margin: '4rem',
+      }}
+    >
       <Flex
         flexDirection="column"
         gap={tokens.spacingM}
