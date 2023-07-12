@@ -24,7 +24,7 @@
   "compile-hero.disable-compile-files-on-did-save-code": true,
   "[typescriptreact]": {
     // "editor.defaultFormatter": "vscode.typescript-language-features",
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true
   },
