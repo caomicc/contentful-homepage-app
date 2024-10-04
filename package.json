@@ -1,17 +1,16 @@
 {
-  "name": "homepage",
+  "name": "home-location",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@contentful/app-sdk": "4.17.1",
-    "@contentful/f36-avatar": "^4.0.0-alpha.2",
+    "@contentful/app-sdk": "4.22.0",
     "@contentful/f36-components": "4.45.0",
+    "@contentful/f36-layout": "^4.0.0-alpha.1",
     "@contentful/f36-navlist": "^4.1.0-alpha.1",
     "@contentful/f36-tokens": "4.0.2",
-    "@contentful/react-apps-toolkit": "1.2.4",
-    "contentful": "^10.3.1",
-    "contentful-management": "^10.10.0",
-    "dayjs-greet": "^1.0.0",
+    "@contentful/react-apps-toolkit": "1.2.16",
+    "contentful-management": "10.38.3",
+    "dayjs-greet": "^1.1.2",
     "emotion": "10.0.27",
     "react": "18.2.0",
     "react-async-hook": "^4.0.0",
@@ -26,7 +25,7 @@
     "eject": "react-scripts eject",
     "create-app-definition": "contentful-app-scripts create-app-definition",
     "upload": "contentful-app-scripts upload --bundle-dir ./build",
-    "upload-ci": "contentful-app-scripts upload --ci --bundle-dir ./build --organization-id $CONTENTFUL_ORG_ID --definition-id $CONTENTFUL_APP_DEF_ID --token $CONTENTFUL_ACCESS_TOKEN"
+    "upload-ci": "contentful-app-scripts upload --ci --bundle-dir ./build --organization-id $ORGID --definition-id $APPID --token $ACCESSTOKEN"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,17 +43,17 @@
     ]
   },
   "devDependencies": {
-    "@contentful/app-scripts": "1.1.17",
+    "@contentful/app-scripts": "1.10.2",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
     "@tsconfig/create-react-app": "2.0.0",
-    "@types/jest": "28.1.6",
-    "@types/node": "18.6.5",
+    "@types/jest": "29.5.2",
+    "@types/node": "16.18.38",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "cross-env": "7.0.3",
-    "prettier": "2.7.1",
-    "typescript": "4.7.4"
+    "prettier": "2.8.8",
+    "typescript": "4.9.5"
   },
   "homepage": "."
 }

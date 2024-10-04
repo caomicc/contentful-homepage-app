@@ -1,6 +1,5 @@
 import {
   Text,
-  Card,
   Flex,
   Box,
   Paragraph,
@@ -30,15 +29,11 @@ export const UserData = () => {
     return await sdk.ids.environment;
   }, [cma]);
 
-  // const { result: spaceResult, loading: spaceLoading } = useAsync(getSpace, []);
-  const { result: environmentResult, loading: environmentLoading } = useAsync(
-    getEnvironment,
-    []
-  );
-
   return (
-    <Card>
-      <Flex flexDirection="column" gap="spacingS">
+    <>
+      <Flex flexDirection="column" gap="spacingS" style={{
+        padding: '0.5rem 0.75rem'
+      }}>
         <Box>
           <Stack>
             <Avatar src={sdk.user.avatarUrl} size="large" />
@@ -54,17 +49,8 @@ export const UserData = () => {
             </Box>
           </Stack>
         </Box>
-        {environmentResult && (
-          <Text as={Paragraph} fontSize="fontSizeM">
-            You're in the{' '}
-            <Text fontColor="colorPositive" fontStack="fontStackMonospace">
-              {environmentResult}
-            </Text>{' '}
-            environment.
-          </Text>
-        )}
         <UserRole spaceMembership={sdk.user.spaceMembership} />
       </Flex>
-    </Card>
+    </>
   );
 };

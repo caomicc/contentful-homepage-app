@@ -7,11 +7,15 @@ interface StatCardProps {
 }
 
 export const StatCard = ({ count, title }: StatCardProps) => (
-  <Card padding="large">
-    <Flex flexDirection="column" alignItems="center" gap="spacingM">
+  <Card padding="none"
+  style={{
+        padding: '0.5rem 0.75rem'
+
+  }}>
+    <Flex flexDirection="column" alignItems="center" gap="Xs">
       <Text
         lineHeight={'lineHeightCondensed'}
-        fontSize="fontSize2Xl"
+        fontSize="fontSizeXl"
         fontWeight="fontWeightDemiBold"
       >
         {count}

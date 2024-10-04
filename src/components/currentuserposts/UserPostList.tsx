@@ -75,7 +75,6 @@ export default function UserPostList({
         </TableHead>
         <TableBody>
           {entries.map((entry: any) => {
-            console.log('entry', entry);
             return (
               <TableRow
                 key={entry.sys.id}

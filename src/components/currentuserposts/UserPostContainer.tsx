@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Box, Flex, SectionHeading } from '@contentful/f36-components';
+import { Box, Flex, Heading, SectionHeading } from '@contentful/f36-components';
 import { useAsync } from 'react-async-hook';
 import { useCMA, useSDK } from '@contentful/react-apps-toolkit';
 import UserPostList from './UserPostList';
@@ -37,7 +37,8 @@ const UserPostContainer = () => {
         width: '100%',
       }}
     >
-      <SectionHeading>Your most recently edited entries</SectionHeading>
+      <Heading style={{
+      }}>Your most recently edited entries</Heading>
 
       {loading ? (
         <Flex marginTop="spacingXl">

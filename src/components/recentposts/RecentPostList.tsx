@@ -72,8 +72,6 @@ export default function RecentPostList({
       );
   };
 
-  console.log('memberResult', memberResult);
-
   if (!entries) {
     return (
       <HelpText
@@ -100,7 +98,6 @@ export default function RecentPostList({
         </TableHead>
         <TableBody>
           {entries.map((entry: any) => {
-            console.log('containsUpdatedBy', entry.sys);
             return (
               <TableRow
                 key={entry.sys.id}

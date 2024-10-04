@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Box, Flex, SectionHeading } from '@contentful/f36-components';
+import { Box, Flex, Heading, SectionHeading } from '@contentful/f36-components';
 import { useAsync } from 'react-async-hook';
 import { useCMA, useSDK } from '@contentful/react-apps-toolkit';
 import RecentPostList from './RecentPostList';
@@ -33,7 +33,7 @@ const CollectionContainer = () => {
         width: '100%',
       }}
     >
-      <SectionHeading>Recently edited entries</SectionHeading>
+      <Heading marginTop='spacingM'>Recently edited entries</Heading>
 
       {loading ? (
         <Flex marginTop="spacingXl">

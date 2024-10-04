@@ -1,15 +1,14 @@
-import React from 'react';
 import {
   Box,
-  Button,
   Flex,
+  MenuDivider,
   SectionHeading,
   TextLink,
 } from '@contentful/f36-components';
 import { useAsync } from 'react-async-hook';
 import { useCMA, useSDK } from '@contentful/react-apps-toolkit';
 import { NavList } from '@contentful/f36-navlist';
-import { ContentTypeProps } from 'contentful-management';
+import { LoadingStats } from '../stats/LoadingStats';
 
 const getQuickLinks = async (cma: ReturnType<typeof useCMA>) => {
   try {
@@ -37,27 +36,34 @@ const getQuickLinks = async (cma: ReturnType<typeof useCMA>) => {
 };
 
 const QuickLinks = () => {
-  const cma = useCMA();
   const sdk = useSDK();
-
-  console.log('cma', cma);
-  console.log('sdk', sdk);
 
   console.log(
     'sdk params',
-    sdk.parameters.installation
-    // sdk.parameters.invocation,
-    // sdk.parameters.instance
+    sdk.parameters.installation,
+    sdk.space.getContentType('blogPost')
   );
 
-  const { result, loading } = useAsync(getQuickLinks, [cma]);
+  const { result, loading } = useAsync(getQuickLinks, [sdk.cma]);
+
+  const quickLinks = sdk.parameters.installation.selectedSidebarCTs;
+
+  console.log('quickLinks', quickLinks)
+  console.log('result', )
 
   return (
-    <Box>
-      <SectionHeading>Quicklinks:</SectionHeading>
+<>
       {loading ? (
-        <Flex marginTop="spacingXl">{/* <LoadingStats /> */}</Flex>
+        <Flex marginTop="spacingXl"><LoadingStats /></Flex>
       ) : (
+        <>
+        <Box style={{
+          padding: '0.5rem 0.75rem',
+        }}>
+        <SectionHeading style={{
+          padding: '0.25rem 1rem 0.25rem .5rem',
+          marginBottom: '0.25rem',
+        }}>Our Site</SectionHeading>
         <NavList aria-label="Content Type Sidebar">
           <NavList.Item
             as={TextLink}
@@ -81,39 +87,45 @@ const QuickLinks = () => {
           >
             📚 Visit our Blog
           </NavList.Item>
-          {result &&
-            Object.entries(result.contentTypes.items)
-              .filter(([key, value]) =>
-                // value.sys.id === 'blogPost' ||
-                // value.sys.id === 'page' ||
-                // value.sys.id === 'caseStudy' ||
-                // value.sys.id === 'document' ||
-                // value.sys.id === 'event' ||
-                // value.sys.id === 'newsArticle' ||
-                // value.sys.id === 'webinar' ||
-                sdk.parameters.installation.selectedSidebarCTs.includes(
-                  value.sys.id
-                )
-              )
-              .map(([key, value]: [string, any]) => (
-                <NavList.Item
-                  as={'button'}
-                  style={{
-                    justifyContent: 'flex-start',
-                    textDecoration: 'none',
-                  }}
-                  onClick={() => {
-                    sdk.navigator.openNewEntry(value.sys.id);
-                  }}
-                  key={key}
-                >
-                  ➕ Create a new {value.name}
-                </NavList.Item>
-              ))}
+          </NavList>
+        </Box>
+        <MenuDivider/>
+        <Box style={{
+          padding: '0.5rem 0.75rem',
+        }}>
+        <SectionHeading style={{
+          padding: '0.25rem 1rem 0.25rem .5rem',
+          marginBottom: '0.25rem',
+        }}>Quick Links</SectionHeading>
+        <NavList aria-label="Content Type Sidebar">
+          {quickLinks.map((ct, index) => {
+            return (
+              <NavList.Item
+                as={TextLink}
+                target="_blank"
+                key={ct}
+                style={{
+                  justifyContent: 'flex-start',
+                  textDecoration: 'none',
+                }}
+                onClick={() => {
+                  // @ts-ignore
+                  sdk.navigator.openNewEntry({
+                    contentTypeId: ct,
+                  });
+                }}
+              >
+                Create New {ct}
+              </NavList.Item>
+            )})
+          }
+
         </NavList>
-      )}
-    </Box>
+      </Box>
+    </>
+  )}
+</>
   );
-};
+}
 
 export default QuickLinks;

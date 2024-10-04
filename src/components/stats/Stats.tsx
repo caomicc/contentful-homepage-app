@@ -30,8 +30,14 @@ const Stats = () => {
 
   const { result: statResult, loading: statLoading } = useAsync(getStats, []);
   return (
-    <Box>
-      <SectionHeading>Current space summary:</SectionHeading>
+    <Box
+    style={{
+      padding: '0.5rem 0.75rem',
+
+    }}>
+      <SectionHeading style={{
+          padding: '0.25rem 1rem 0.25rem .5rem',
+        }}>Current space summary:</SectionHeading>
       {statLoading ? (
         <Flex marginTop="spacingXl">
           <LoadingStats />
