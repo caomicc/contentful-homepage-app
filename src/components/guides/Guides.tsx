@@ -22,15 +22,13 @@ const getGuides = async (
 };
 
 const Guides = () => {
-  const cma = useCMA();
   const sdk = useSDK();
 
-  console.log("cma", cma);
   console.log("sdk", sdk);
 
   console.log("sdk params", sdk.parameters.installation);
 
-  const { result, loading } = useAsync(getGuides, [cma, sdk]);
+  const { result, loading } = useAsync(getGuides, [sdk.cma, sdk]);
 
   // const items = sdk.parameters.installation.inputList?.map(
   //   ([key, item]: [string, any]) => <div key={key}>{item}</div>
@@ -39,7 +37,7 @@ const Guides = () => {
   console.log(result)
 
   return (
-        <Box style={{
+      <Box style={{
       padding: '0.5rem 0.75rem',
     }}>
       <SectionHeading>Guides:</SectionHeading>
@@ -47,7 +45,7 @@ const Guides = () => {
         <Flex marginTop="spacingXl">Loading...</Flex>
       ) : (
         <NavList aria-label="Content Type Sidebar">
-          {/* <>{console.log(sdk.parameters.installation.inputList)}</> */}
+          <>{console.log(sdk.parameters.installation.inputList)}</>
           {/* {items} */}
         </NavList>
       )}

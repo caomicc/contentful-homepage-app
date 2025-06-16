@@ -3,6 +3,31 @@
 This example shows how an app with a home location can be built.
 It creates a simple dashboard with information about your space and stats about your content
 
+## Codebase Overview
+
+The project is a React application structured as follows:
+
+- **src/**: Main source code for the app.
+  - `App.tsx`: Entry point for routing between Home and Config screens based on Contentful location.
+  - `index.tsx`: Bootstraps the app and handles local/development warnings.
+  - `SDKProvider.tsx`: Custom provider for Contentful SDK context.
+  - **components/**: Reusable UI components and feature modules.
+    - `comments/`, `currentuserposts/`, `guides/`, `members/`, `quicklinks/`, `recentposts/`, `stats/`, `user/`: Feature-specific components for dashboard sections.
+    - `LocalhostWarning.tsx`: Shows a warning if running outside Contentful.
+  - **locations/**: Top-level screens for the app.
+    - `Home.tsx`: Main dashboard layout and composition.
+    - `ConfigScreen.tsx`: App configuration UI for Contentful setup.
+  - **utils/**: Utility functions for Contentful integration and field/sidebar logic.
+  - `setupTests.ts`: Test setup for React Testing Library.
+  - `react-app-env.d.ts`: TypeScript environment definitions.
+
+- **public/**: Static assets and the main HTML template.
+- **build/**: Production build output (gitignored).
+- **.vscode/**: Editor settings, launch configs, and recommended extensions.
+- **package.json**: Project dependencies and scripts.
+- **tsconfig.json**: TypeScript configuration.
+- **.env.example**: Example environment variables for Contentful integration.
+
 ## How to use
 
 Execute create-contentful-app with npm, npx or yarn to bootstrap the example:
@@ -46,7 +71,7 @@ Read [here](https://www.contentful.com/developers/docs/extensibility/app-framewo
 
 #### `npm run upload-ci`
 
-Similar to `npm run upload` it will upload your app to contentful and activate it. The only difference is  
+Similar to `npm run upload` it will upload your app to contentful and activate it. The only difference is
 that with this command all required arguments are read from the environment variables, for example when you add
 the upload command to your CI pipeline.
 
